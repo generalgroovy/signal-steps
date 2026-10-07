@@ -1,1 +1,10 @@
-{"name":"signal-steps","version":"1.0.0","private":true,"type":"module","scripts":{"test":"node --test","check":"node --check app.mjs && node --check model.mjs"}}
+{
+  "name": "signal-steps",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check app.mjs && node --check model.mjs"
+  }
+}
