@@ -1,0 +1,8 @@
+{
+  "name": "Signal Steps",
+  "version": "1.0.0",
+  "inspiration_repository": "midilin",
+  "implementation": "Original independent companion project",
+  "runtime": "Static browser; no remote runtime dependencies",
+  "repository_visibility": "public"
+}
