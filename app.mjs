@@ -7,8 +7,8 @@ function remember(){try{localStorage.setItem('signal-steps-v1',exportBoard(state
 function change(fn,rebuild=true){history.push(structuredClone(state));if(history.length>40)history.shift();fn();remember();render(rebuild);}
 function render(rebuild=true){
   const result=evaluate(state),done=solved(state),rows=truth(state),p=PUZZLES[state.puzzle];
-  $('chapter').textContent=state.sandbox?'YOUR OWN CIRCUIT':`PUZZLE ${state.puzzle+1} / ${PUZZLES.length}`;
-  $('goal-title').textContent=state.sandbox?'What will you make?':p.name;$('goal-copy').textContent=state.sandbox?'Connect up to four rules. Toggle the switches and watch the answer travel.':p.hint;
+  $('chapter').textContent=state.sandbox?'FREE BUILD':`PUZZLE ${state.puzzle+1} / ${PUZZLES.length}`;
+  $('goal-title').textContent=state.sandbox?'Build a circuit':p.name;$('goal-copy').textContent=state.sandbox?'Connect up to four rules. Each row shows one switch combination.':p.hint;
   for(const name of ['a','b']){$(`switch-${name}`).setAttribute('aria-pressed',String(state[name]));$(`switch-${name}`).querySelector('strong').textContent=state[name]?'On':'Off';}
   if(rebuild){
     const openInputs=new Set([...$('gates').querySelectorAll('details[open]')].map(el=>el.dataset.rule));
@@ -30,7 +30,7 @@ function render(rebuild=true){
   state.gates.forEach((gate,i)=>{
     $(`signal-${i}`).textContent=result.signals[String(i+1)]?'● On':'○ Off';$(`signal-${i}`).classList.toggle('on',result.signals[String(i+1)]);$(`gate-${i}-right`).disabled=gate.op==='not';
     const source=name=>name==='A'||name==='B'?name:`Rule ${name}`;
-    $(`inputs-${i}`).textContent=`Inputs: ${source(gate.left)}${gate.op==='not'?'':` + ${source(gate.right)}`} · change`;
+    $(`inputs-${i}`).textContent=`Inputs: ${source(gate.left)}${gate.op==='not'?'':` + ${source(gate.right)}`}`;
     $(`hint-${i}`).textContent={and:'On when both inputs are on.',or:'On when at least one input is on.',xor:'On when exactly one input is on.',not:'On when its input is off.'}[gate.op];
   });
   $('lamp').classList.toggle('on',result.output);$('lamp').setAttribute('aria-label',`Lamp ${result.output?'on':'off'}`);$('lamp-text').textContent=result.output?'On':'Off';
@@ -48,7 +48,7 @@ function render(rebuild=true){
   }));
   if(focusedPair!==undefined)$('truth').querySelector(`[data-pair="${focusedPair}"]`)?.focus({preventScroll:true});
   const matched=rows.filter((row,i)=>row.on===p.goal[i]).length;
-  $('feedback').textContent=state.sandbox?'Every switch combination is shown above. Save a board to keep your idea.':done?state.puzzle===PUZZLES.length-1?'Final puzzle solved. Explore freely to build your own rules.':'It works! All four combinations match.':`${matched} of 4 combinations match. Adjust a rule to change the lamp.`;
+  $('feedback').textContent=state.sandbox?'All four switch combinations shown.':done?state.puzzle===PUZZLES.length-1?'Final puzzle solved. Explore freely to build your own rules.':'Solved: all four combinations match.':`${matched} of 4 combinations match. Adjust a rule to change the lamp.`;
   $('next').hidden=!done||state.puzzle===PUZZLES.length-1;$('undo').disabled=!history.length;$('add').disabled=state.gates.length===4;$('remove').disabled=state.gates.length===1;$('remove').hidden=state.gates.length===1;$('sandbox').setAttribute('aria-pressed',String(state.sandbox));$('sandbox').textContent=state.sandbox?'Back to puzzles':'Explore freely';
 }
 for(const key of ['a','b'])$(`switch-${key}`).onclick=()=>change(()=>state[key]=!state[key],false);

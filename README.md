@@ -17,7 +17,3 @@ All controls support keyboard and touch without dragging. Rules update immediate
 ## Design and lineage
 
 An original companion idea inspired by MIDILIN's input-to-action reasoning, implemented independently as a software logic playground. The pure model owns validation, evaluation, truth tables and challenge completion. The UI renders that same model. Tests cover actual truth tables, composition, puzzle reachability, unsafe wiring, import validation and recovery.
-
-## Potential depth
-
-Future work could add named circuit modules, more input switches and a user-authored puzzle exchange. Those features are not part of this version.
